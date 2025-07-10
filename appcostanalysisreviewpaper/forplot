@@ -1,0 +1,58 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# Load data
+data = pd.read_csv("meta_analysis_data.csv")
+
+# Calculate 95% CI
+data['LowerCI'] = data['EffectSize'] - 1.96 * data['SE']
+data['UpperCI'] = data['EffectSize'] + 1.96 * data['SE']
+
+# Pooled estimate
+pooled_effect = 54
+pooled_se = (64 - 44) / (2 * 1.96)
+pooled_lower = pooled_effect - 1.96 * pooled_se
+pooled_upper = pooled_effect + 1.96 * pooled_se
+
+# Create forest plot
+plt.figure(figsize=(8, 6), dpi=300)
+for i, row in data.iterrows():
+    plt.scatter(row['EffectSize'], i, s=100, marker='s', color='black')
+    plt.plot([row['LowerCI'], row['UpperCI']], [i, i], color='black')
+    if row['Outlier'] == 'Yes':
+        plt.text(-20, i, 'Outlier', color='red', fontsize=8, va='center')
+
+# Pooled diamond
+diamond_y = len(data)
+plt.plot(
+    [pooled_lower, pooled_effect, pooled_upper, pooled_effect, pooled_lower],
+    [
+        diamond_y - 0.2,
+        diamond_y,
+        diamond_y - 0.2,
+        diamond_y - 0.4,
+        diamond_y - 0.2
+    ],
+    color='black'
+)
+plt.scatter(
+    pooled_effect,
+    diamond_y - 0.1,
+    s=200,
+    marker='D',
+    color='black'
+)
+
+# Labels and formatting
+labels = list(data['Study'] + ' - ' + data['Technique']) + ['Pooled Estimate']
+plt.yticks(range(len(data) + 1), labels)
+plt.xlabel('Cost Savings (%)')
+plt.title('Forest Plot of Cost Savings (95% CI) Across Techniques')
+plt.axvline(x=pooled_effect, linestyle='--', color='grey')
+plt.xlim(0, 100)
+plt.grid(True, axis='x', linestyle='--', alpha=0.7)
+plt.gca().invert_yaxis()
+
+# Save plot
+plt.savefig('forest_plot.png', bbox_inches='tight')
+plt.close()

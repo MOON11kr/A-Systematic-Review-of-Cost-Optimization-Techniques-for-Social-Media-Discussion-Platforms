@@ -1,0 +1,13 @@
+Study,Technique,EffectSize,SE,Outlier
+Smith2022,Lazy Loading,40,5,No
+Johnson2021,Batch Caching,50,6,No
+Lee2023,Edge Caching,60,4,No
+Davis2021,Database Indexing,60,5,No
+Brown2020,Serverless Computing,80,3,Yes
+Wilson2022,Disqus Integration,40,7,No
+Taylor2023,WebP Optimization,25,4,No
+Clark2022,Static JSON Files,15,3,No
+Ross2023,WebAssembly,20,5,No
+Zhang2023,Predictive Caching,25,6,No
+Wu2024,RL for Caching,15,4,No
+Lee2023b,AI-Driven Edge Computing,35,5,No
